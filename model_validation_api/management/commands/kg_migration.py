@@ -46,8 +46,8 @@ except NameError:
 logger = logging.getLogger("kg_migration")
 
 nexus_token = os.environ['HBP_token']
-nexus_endpoint = "https://nexus-int.humanbrainproject.org/v0"
-#nexus_endpoint = "https://nexus.humanbrainproject.org/v0"
+# nexus_endpoint = "https://nexus-int.humanbrainproject.org/v0"
+nexus_endpoint = "https://nexus.humanbrainproject.org/v0"
 NAR_client = KGClient(nexus_token, nexus_endpoint)
 
 
@@ -680,13 +680,13 @@ class Command(BaseCommand):
 
 
     def handle(self, *args, **options):
-        self._getPersons_and_migrate()
-        self.add_organizations_in_KG_database()
-        self.migrate_models()
+        # self._getPersons_and_migrate()
+        # self.add_organizations_in_KG_database()
+        # self.migrate_models()
         # sleep(10)  # allow some time for indexing
         # self.migrate_model_instances()
-        #self.migrate_validation_definitions()
+        # self.migrate_validation_definitions()
         #sleep(10)
-        #self.migrate_validation_code()
+        # self.migrate_validation_code()
         #sleep(10)
-        #self.migrate_validation_results()
+        self.migrate_validation_results()
