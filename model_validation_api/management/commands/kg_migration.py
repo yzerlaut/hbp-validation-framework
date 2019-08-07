@@ -1,4 +1,5 @@
 from django.core.management.base import BaseCommand
+import os, sys
 from ...models import (
                     Param_Species,
                     Param_DataModalities,
@@ -33,7 +34,6 @@ from hbp_service_client.storage_service.client import Client as StorageClient
 from hbp_service_client.storage_service.exceptions import StorageForbiddenException, StorageNotFoundException
 import uuid
 import requests
-import os
 import json
 import datetime
 import logging
@@ -681,7 +681,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         # self._getPersons_and_migrate()
-        # self.add_organizations_in_KG_database()
+        self.add_organizations_in_KG_database()
         # self.migrate_models()
         # sleep(10)  # allow some time for indexing
         # self.migrate_model_instances()
@@ -689,4 +689,4 @@ class Command(BaseCommand):
         #sleep(10)
         # self.migrate_validation_code()
         #sleep(10)
-        self.migrate_validation_results()
+        # self.migrate_validation_results()
