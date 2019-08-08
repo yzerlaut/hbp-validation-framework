@@ -1,0 +1,17 @@
+#!/Users/yann/.bash_profile
+
+echo "----------------------------------------------- "
+conda deactivate
+conda activate dev
+echo " activating the dev environment    "
+cd ~/work/hbp-validation-framework/
+echo "Exporting the HBP and CSCS tokens from the json files in (~/Downloads)"
+sh export_env_variables_from_json_files.sh
+cd validation_service
+echo "Loading the Django keys"
+sh env_local.sh
+echo "Current filder is:"
+pwd
+echo "testing the connection with manage.py check"
+python manage.py check
+
