@@ -3,15 +3,16 @@
 echo "----------------------------------------------- "
 conda deactivate
 conda activate dev
-echo " activating the dev environment    "
+echo "1) activating the dev environment    "
 cd ~/work/hbp-validation-framework/
-echo "Exporting the HBP and CSCS tokens from the json files in (~/Downloads)"
-sh export_env_variables_from_json_files.sh
+echo "2) Exporting the HBP and CSCS tokens from the json files in (~/Downloads)"
+source export_env_variables_from_json_files.sh
 cd validation_service
-echo "Loading the Django keys"
-sh env_local.sh
-echo "Current filder is:"
+echo "3) Loading the environement variables to access the Django server"
+source env_local.sh
+echo "4) Moving to the folder is:"
 pwd
-echo "testing the connection with manage.py check"
+echo "5) and testing the connection with the django-db (python manage.py check)"
+echo "output: "
 python manage.py check
 

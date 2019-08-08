@@ -21,5 +21,5 @@ magic+="export HBP_STORAGE_TOKEN="+str(data2["auth"]["token"]["access_token"])+"
 print(magic)')
 
 eval "$output"
-echo $output
+
 
