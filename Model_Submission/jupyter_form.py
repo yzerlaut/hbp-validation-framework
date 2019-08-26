@@ -2,10 +2,9 @@ from __future__ import print_function
 from ipywidgets import interact, interactive, fixed, interact_manual
 import ipywidgets as widgets
 
-try:
-    from .kg_interaction import check_if_alias_is_already_taken
-except ModuleNotFoundError:
-    from kg_interaction import check_if_alias_is_already_taken
+import sys, pathlib
+sys.path.append(str(pathlib.Path(__file__).resolve()))
+from kg_interaction import check_if_alias_is_already_taken
     
 
 import requests
