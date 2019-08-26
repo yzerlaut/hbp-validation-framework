@@ -1,0 +1,3 @@
+pip install ipywidgets==7.5.1
+pip install widgetsnbextension==3.5.1
+jupyter nbextension enable --py widgetsnbextension
