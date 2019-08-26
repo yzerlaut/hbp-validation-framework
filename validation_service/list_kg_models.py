@@ -1,6 +1,3 @@
-
-
-
 import os
 from fairgraph.client import KGClient
 from fairgraph.base import as_list
