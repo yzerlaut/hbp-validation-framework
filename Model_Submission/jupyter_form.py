@@ -3,7 +3,7 @@ from ipywidgets import interact, interactive, fixed, interact_manual
 import ipywidgets as widgets
 
 import sys, pathlib
-sys.path.append(str(pathlib.Path(__file__).resolve()))
+sys.path.append(str(pathlib.Path(__file__).resolve().parent))
 from kg_interaction import check_if_alias_is_already_taken
     
 
