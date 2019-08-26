@@ -2,9 +2,10 @@ from __future__ import print_function
 from ipywidgets import interact, interactive, fixed, interact_manual
 import ipywidgets as widgets
 
-import sys, pathlib
-sys.path.append(str(pathlib.Path(__file__).resolve().parent))
-from kg_interaction import check_if_alias_is_already_taken
+try:
+    from .kg_interaction import check_if_alias_is_already_taken
+except ModuleNotFoundError:
+    from kg_interaction import check_if_alias_is_already_taken
     
 
 import requests
@@ -17,7 +18,11 @@ class Registration_Form:
     
     def __init__(self):
         self.Widget_List = {}
-        
+        self.order = ['name', 'alias', 'contact', 'institution', 'contributors', 'description',
+                      'fig_url', 'fig_display', 'species', 'region', 'cell_type', 'scope', 'abstraction',
+                      'license', 'version_text', 'version_name', 'data_url', 'commit_id', 'version_description']
+
+            
         self.Widget_List['name'] = interactive(self.f,
                                               x=widgets.Text(\
                                                     value='',
@@ -102,7 +107,6 @@ class Registration_Form:
                                                         value='',
                                                         description='Abstraction level:'))
 
-
         self.Widget_List['license'] = interactive(self.f,
                                                     x=widgets.RadioButtons(
                                                     options=['Free', 'OpenSource', 'CreativeCommons'],
@@ -186,17 +190,17 @@ class Registration_Form:
         print('-----------------------------------------------')
         print('--- MODEL REGISTRATION IN HBP MODEL CATALOG ---')
         print('-----------------------------------------------')
-        for key, val in self.Widget_List.items():
-            display(val)
+        for key in self.order:
+            display(self.Widget_List[key])
 
     def close_widgets(self):
         for key, val in self.Widget_List.items():
             val.close()
 
     def print_registration_results(self):
-        for key, val in self.Widget_List.items():
+        for key in self.order:
             try:
-                print(val.result)
+                print(self.Widget_List[key])
             except AttributeError:
                 pass
 
