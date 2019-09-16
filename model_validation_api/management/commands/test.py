@@ -29,6 +29,8 @@ from fairgraph.core import Person, Organization, Collection
 from fairgraph.commons import Address, BrainRegion, Species, AbstractionLevel, CellType, ModelScope
 from fairgraph.client import KGClient
 from fairgraph.base import KGQuery, Distribution, as_list
+from fairgraph.electrophysiology import PatchedCell
+from fairgraph.minds import Dataset
 from hbp_app_python_auth.auth import get_access_token, get_auth_header
 from hbp_service_client.storage_service.client import Client as StorageClient
 from hbp_service_client.storage_service.exceptions import StorageForbiddenException, StorageNotFoundException
@@ -680,8 +682,46 @@ class Command(BaseCommand):
 
 
     def handle(self, *args, **options):
-        self._getPersons_and_migrate()
+        # self._getPersons_and_migrate()
         # self.add_organizations_in_KG_database()
+
+        # interaction with Knowledge Graphs
+        client = KGClient(nexus_token)
+        
+        # simple query using the API
+        # cells_in_ca1 = PatchedCell.list(client, brain_region=BrainRegion("hippocampus CA1"))
+        # print('%i cells patched in CA1' % len(cells_in_ca1))
+
+        # more complex query
+        # query = {
+        #     "path": "minds:specimen_group / minds:subjects / minds:samples / minds:methods / schema:name",
+        #     "op": "in",
+        #     "value": ["Electrophysiology recording",
+        #               "Voltage clamp recording",
+        #               "Single electrode recording",
+        #               "functional magnetic resonance imaging"]
+        # }
+        query = {
+            "path": "minds:specimen_group / minds:subjects / minds:samples / minds:methods / minds:contributors / schema:name",
+            # "path": "minds:person",
+            "op": "in",
+            "value": ["Marchetti, Cristina", "Cristina Marchetti", "Marchetti Cristina", "Marchetti C.", "Marchetti"]
+        }
+        context = {
+                    "schema": "http://schema.org/",
+                    "minds": "https://schema.hbp.eu/minds/"
+        }
+
+        activity_datasets = KGQuery(Dataset, query, context).resolve(client)
+        for ii, dataset in enumerate(activity_datasets):
+            print("%i) * %s \n %s \n \n " % (ii, dataset.contributors, dataset.name))
+        # interaction with Django client
+        # models = ScientificModel.objects.all()
+        # for model in models:
+        #     authors = self._get_people_from_Persons_table(model.author)
+        #     for author in authors:
+        #         print(author)
+                
         # self.migrate_models()
         # sleep(10)  # allow some time for indexing
         # self.migrate_model_instances()

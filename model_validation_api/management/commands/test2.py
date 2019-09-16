@@ -29,6 +29,8 @@ from fairgraph.core import Person, Organization, Collection
 from fairgraph.commons import Address, BrainRegion, Species, AbstractionLevel, CellType, ModelScope
 from fairgraph.client import KGClient
 from fairgraph.base import KGQuery, Distribution, as_list
+from fairgraph.electrophysiology import PatchedCell
+from fairgraph.minds import Dataset
 from hbp_app_python_auth.auth import get_access_token, get_auth_header
 from hbp_service_client.storage_service.client import Client as StorageClient
 from hbp_service_client.storage_service.exceptions import StorageForbiddenException, StorageNotFoundException
@@ -680,13 +682,9 @@ class Command(BaseCommand):
 
 
     def handle(self, *args, **options):
-        self._getPersons_and_migrate()
-        # self.add_organizations_in_KG_database()
-        # self.migrate_models()
-        # sleep(10)  # allow some time for indexing
-        # self.migrate_model_instances()
-        # self.migrate_validation_definitions()
-        #sleep(10)
-        # self.migrate_validation_code()
-        #sleep(10)
-        # self.migrate_validation_results()
+
+        models = ScientificModel.objects.all()
+        for model in models:
+            authors = self._get_people_from_Persons_table(model.author)
+            for author in authors:
+                print(author)
