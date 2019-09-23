@@ -25,7 +25,8 @@ from tabulate  import tabulate
 from fairgraph.brainsimulation import (ModelProject, MEModel, EModel, Morphology, ModelScript, ModelInstance,
                                  ValidationTestDefinition as ValidationTestDefinitionKG, AnalysisResult,
                                  ValidationScript, ValidationActivity, ValidationResult)
-from fairgraph.core import Person, Organization, Collection
+#from fairgraph.core import Person, Organization, Collection
+from fairgraph.core import Person
 from fairgraph.commons import Address, BrainRegion, Species, AbstractionLevel, CellType, ModelScope
 from fairgraph.client import KGClient
 from fairgraph.base import KGQuery, Distribution, as_list
