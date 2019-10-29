@@ -86,17 +86,17 @@ class Command(BaseCommand):
     
     def handle(self, *args, **options):
         # fetch_djando_db_entries()
-        # fetch_kg_entries()
+        fetch_kg_entries()
         
 
-        models = ScientificModel.objects.all()
-        for m, model in enumerate(models):
-            print('----------------------\n%i) Model "%s"' % (m, model.name))
-            try:
-                for i, instance in enumerate(model.instances.all()):
-                    print('  - instance-%i)  %s, %s, %s' % (i+1, instance.timestamp, instance.version, os.path.basename(instance.source)))
-            except IndexError:
-                print('No instance for ', model.name)
+        # models = ScientificModel.objects.all()
+        # for m, model in enumerate(models):
+        #     print('----------------------\n%i) Model "%s"' % (m, model.name))
+        #     try:
+        #         for i, instance in enumerate(model.instances.all()):
+        #             print('  - instance-%i)  %s, %s, %s' % (i+1, instance.timestamp, instance.version, os.path.basename(instance.source)))
+        #     except IndexError:
+        #         print('No instance for ', model.name)
         
         # from ...models import ScientificModel # django database
         # models = ScientificModel.objects.all()

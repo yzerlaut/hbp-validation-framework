@@ -16,44 +16,47 @@ from fairgraph.base import KGQuery
 # from fairgraph.core import Person, Activity, AgeCategory, Dataset, EmbargoStatus, Method, Person, Project, Sample, Sex, Species
 from fairgraph.minds import Person
 
-def fetch_all_authors_in_KG():
+from fairgraph.base import KGQuery
+from fairgraph.minds import Dataset
 
-    query = {
-        "path": "minds:author / minds:subjects / minds:samples / minds:methods / schema:name",
-        "op": "in",
-        "value": ["Electrophysiology recording",
-                  "Voltage clamp recording",
-                  "Single electrode recording",
-                  "functional magnetic resonance imaging"]
-    }
-    context = {
-                "schema": "http://schema.org/",
-                "minds": "https://schema.hbp.eu/minds/"
-    }
+# query = {
+#     "path": "minds:specimen_group / minds:subjects / minds:samples / minds:methods / schema:name",
+#     # "path": "schema:name",
+#     "op": "in",
+#     "value": ["Electrophysiology recording",
+#               "Voltage clamp recording",
+#               "Single electrode recording",
+#               "functional magnetic resonance imaging"]
+# }
+query = { "fields": { "fieldname":"schema:name" } }
 
-    activity_datasets = KGQuery(Dataset, query, context).resolve(client)
-    for dataset in activity_datasets:
-        print("* " + dataset.name)
-    
-
+context = {
+    "schema": "http://schema.org/",
+    "minds": "https://schema.hbp.eu/minds/"
+}
 
 def fetch_KG_database():
 
+    activity_datasets = KGQuery(Dataset, query, context).resolve(client)
+    for dataset in activity_datasets:
+        print(dir(dataset))
+        # print("* " + dataset.name)
+        
     KG_db = {}
     # for label, quant in zip(['Activity', 'AgeCategory', 'Dataset', 'EmbargoStatus', 'Method', 'Person', 'Project', 'Sample', 'Sex', 'Species'],
     #                         [Activity, AgeCategory, Dataset, EmbargoStatus, Method, Person, Project, Sample, Sex, Species]):
-    for label, quant in zip(['Person'],
-                            [Person]):
-        KG_db[label] = {'names':[], 'id':[]}
-        db_list = quant.list(client, size=2)
-        print(db_list)
-        # for entry in db_list:
-        #     print(entry)
-        #     KG_db[label]['names'].append(entry.name)
-        #     KG_db[label]['id'].append(entry.id)
-        # print('%i entries for %s' % (len(KG_db[label]['id']), label))
-        # KG_db[label]['names'] = np.array(KG_db[label]['names'], dtype=str)
-        # KG_db[label]['id'] = np.array(KG_db[label]['id'], dtype=str)
+    # for label, quant in zip(['Person'],
+    #                         [Person]):
+    #     KG_db[label] = {'names':[], 'id':[]}
+    #     db_list = quant.list(client, size=2)
+    #     print(db_list)
+    #     for entry in db_list:
+    #     #     print(entry)
+    #     #     KG_db[label]['names'].append(entry.name)
+    #     #     KG_db[label]['id'].append(entry.id)
+    #     # print('%i entries for %s' % (len(KG_db[label]['id']), label))
+    #     # KG_db[label]['names'] = np.array(KG_db[label]['names'], dtype=str)
+    #     # KG_db[label]['id'] = np.array(KG_db[label]['id'], dtype=str)
         
     # activity_list = Activity.list(client, size=1000000)
     # for label, quant in zip(['Methods', 'Protocols'],

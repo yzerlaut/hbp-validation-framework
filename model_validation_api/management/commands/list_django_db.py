@@ -2,22 +2,45 @@ from ...models import ScientificModel
 import numpy as np
 from django.core.management.base import BaseCommand
 
-try:
-    raw_input
-except NameError:
-    raw_input = input
-    
-data = dict(np.load('/home/yzerlaut/Desktop/Model-Catagol-Spreadsheet.npz'))
+import pickle    
 
+
+model_keys = ['abstraction_level', 'alias', 'app', 'app_id', 'author', 'brain_region', 'cell_type', 'check', 'clean', 'clean_fields', 'clean_something_unique_or_null', 'code_format', 'creation_date', 'date_error_message', 'delete', 'description', 'from_db', 'full_clean', 'get_deferred_fields', 'get_next_by_creation_date', 'get_previous_by_creation_date', 'id', 'images', 'instances', 'license', 'model_scope', 'model_type', 'name', 'objects', 'organization', 'owner', 'parents', 'pk', 'pla_components', 'prepare_database_save', 'private', 'project', 'refresh_from_db', 'save', 'save_base', 'serializable']
+
+version_keys = ['check', 'clean', 'clean_fields', 'code_format', 'date_error_message', 'delete', 'description', 'from_db', 'full_clean', 'get_deferred_fields', 'get_next_by_timestamp', 'get_previous_by_timestamp', 'hash', 'id', 'license', 'model', 'model_id', 'morphology', 'objects', 'parameters', 'pk', 'prepare_database_save', 'refresh_from_db', 'save', 'save_base', 'serializable_value', 'source', 'timestamp', 'unique_error_message', 'validate_unique', 'validationtestresult_set', 'version']
+
+
+model_keys = ['abstraction_level', 'alias', 'app', 'app_id', 'author', 'brain_region', 'cell_type', 'code_format', 'creation_date', 'description', 'from_db', 'id', 'license', 'model_scope', 'model_type', 'name', 'organization', 'owner', 'pla_components', 'private', 'project']
+
+version_keys = ['code_format', 'description', 'id', 'license', 'morphology', 'parameters', 'source', 'timestamp', 'version']
+
+
+MODELS = []
 class Command(BaseCommand):
     
     def handle(self, *args, **options):
         
         models = ScientificModel.objects.all()
-
-        icount = 0
+        MODELS = []
         for i, model in enumerate(models):
-            if len(data['Name'][model.name==data['Name']])>0:
-                icount +=1
+            
+            MODELS.append({})
 
-        print('the spreadsheet containing %i models has %i models from the %i models of the Django database' % (len(data['Name']), icount, len(models)))
+            for key in model_keys:
+                MODELS[-1][key] = str(getattr(model, key))
+            
+            model_instances = model.instances.all()
+            MODELS[-1]['instances'] = []
+            for model_instance in model_instances:
+                MODELS[-1]['instances'].append({})
+                for key in version_keys:
+                    MODELS[-1]['instances'][-1][key] = str(getattr(model_instance, key))
+                    
+            MODELS[-1]['images']=[{"url": im.url, "caption": im.caption} for im in model.images.all()]
+
+        print(MODELS)                
+        # np.savez('/home/yzerlaut/work/Django_DB.npz', MODELS)
+        output = open('/home/yzerlaut/work/model-curation/model_sources/Django_DB.pkl', 'wb')
+        pickle.dump(MODELS, output)
+        output.close()
+
