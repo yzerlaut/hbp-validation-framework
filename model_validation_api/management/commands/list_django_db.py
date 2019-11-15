@@ -39,8 +39,10 @@ class Command(BaseCommand):
             MODELS[-1]['images']=[{"url": im.url, "caption": im.caption} for im in model.images.all()]
 
         print(MODELS)                
-        # np.savez('/home/yzerlaut/work/Django_DB.npz', MODELS)
-        output = open('/home/yzerlaut/work/model-curation/model_sources/Django_DB.pkl', 'wb')
+        filename = 'Django_DB.pkl'
+        output = open(filename, 'wb')
+        print('[ok] Database succesfully stored at:')
+        print('--> ', filename)
         pickle.dump(MODELS, output)
         output.close()
 

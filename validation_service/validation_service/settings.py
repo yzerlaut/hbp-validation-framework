@@ -1,6 +1,5 @@
 """
 Django settings for Validation Search Service.
-
 """
 
 import os
@@ -14,8 +13,6 @@ ENV = 'dev'
 
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG') in ['True', '1']
